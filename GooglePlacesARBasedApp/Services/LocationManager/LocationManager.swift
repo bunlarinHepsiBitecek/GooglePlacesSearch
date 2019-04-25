@@ -9,32 +9,11 @@
 import Foundation
 import MapKit
 
-//class LocationManager: NSObject, CLLocationManagerDelegate {
-//
-//    public static var shared = LocationManager()
-//
-//
-//    // 41.10773,29.030638
-//
-//
-//}
-
-protocol LocationManagerDelegate: class {
-    func didUpdateLocation()
-}
-
 class LocationManager: NSObject, CLLocationManagerDelegate {
     
-    var locationListener = Dynamic(CLLocation())
-    
-    var locationCompletionHandler:((_ x : CLLocation) -> Void)?
-    
-    var counter = 0
-    
     public static let shared = LocationManager()
+    
     var locationManager: CLLocationManager!
-    var currentLocation: CLLocation!
-    weak var delegate: LocationManagerDelegate!
     
     override init() {
         super.init()
@@ -44,40 +23,12 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             return
         }
         
-        locationAuthorizationCheck()
-        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        //locationManager.distanceFilter = Constants.Map.DistanceFilter
+        locationManager.distanceFilter = CONSTANT.MAP_KIT_CONSTANT.DISTANCE_FILTER_10
         locationManager.allowsBackgroundLocationUpdates = true // Enable background location updates
         locationManager.pausesLocationUpdatesAutomatically = true // Enable automatic pausing
     }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        print("didChangeAuthorization tetiklendi")
-        //        self.locationAuthorizationCheck()
-    }
-    
-    // MARK: check location auth options
-    func locationAuthorizationCheck() {
-        let status  = CLLocationManager.authorizationStatus()
-        switch status {
-        case .authorizedAlways, .authorizedWhenInUse :
-            break
-        case .denied, .restricted:
-            //self.permissionAlert()
-            break
-        case .notDetermined :
-            locationManager.requestAlwaysAuthorization()
-            break
-        }
-    }
-    
-//    func permissionAlert() {
-//        AlertViewManager.shared.createAlert(title: LocalizedConstants.Location.LocationServiceDisableTitle, message: LocalizedConstants.Location.LocationServiceDisable, preferredStyle: .alert, actionTitleLeft: LocalizedConstants.Location.Settings, actionTitleRight: LocalizedConstants.Location.Ok, actionStyle: .default, completionHandlerLeft: { (action) in
-//            LoaderController.shared.goToSettings()
-//        }, completionHandlerRight: nil)
-//    }
     
     func startUpdateLocation() {
         if CLLocationManager.locationServicesEnabled() {
@@ -102,6 +53,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("didUpdateLocations invoked")
         print("Remzi didUpdateLocations :\(locations.last)")
         guard let location = locations.last  else {
             return
@@ -110,35 +62,18 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         print("Altitude : \(location.altitude)")
         print("Altitude : \(location)")
         
-        //        if let currentLocation = currentLocation {
-        //            if (location.coordinate.longitude == currentLocation.coordinate.longitude &&
-        //                location.coordinate.latitude == currentLocation.coordinate.latitude) && !externalViewInitialize {
-        //                return
-        //            }
-        //        }
-        
-        counter = counter + 1
-        
-        print("counter : \(counter)")
-        
-        self.currentLocation = location
-        
-        delegate?.didUpdateLocation()
-        
-        locationCompletionHandler?(location)
+//        delegate?.didUpdateLocation()
+//
+//        locationCompletionHandler?(location)
         
         
     }
     
-    func moko() {
-        
-    }
-    
-    func getChangeLocationData(completion: @escaping(_ location: CLLocation) -> Void) {
-        
-        locationListener.bind(completion)
-        
-    }
+//    func getChangeLocationData(completion: @escaping(_ location: CLLocation) -> Void) {
+//
+//        locationListener.bind(completion)
+//
+//    }
     
 }
 

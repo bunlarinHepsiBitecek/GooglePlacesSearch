@@ -19,6 +19,7 @@ class MapView: UIView {
         temp.isUserInteractionEnabled = true
         temp.showsScale = true
         temp.showsCompass = true
+        temp.isRotateEnabled = true
         temp.showsUserLocation = true
         return temp
     }()
@@ -49,6 +50,7 @@ extension MapView {
             mapView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
             ])
+        
     }
     
 }

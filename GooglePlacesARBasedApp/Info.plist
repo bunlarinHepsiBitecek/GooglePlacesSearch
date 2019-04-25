@@ -22,10 +22,6 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>${PRODUCT_NAME} would like to use your camera to enhance your augmented reality experience.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>${PRODUCT_NAME} would like to use your location to enhance your augmented reality experience.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>${PRODUCT_NAME} would like to use your location to enhance your augmented reality experience.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>${PRODUCT_NAME} would like to use your location to enhance your augmented reality experience.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

@@ -24,19 +24,31 @@ class MapViewController: UIViewController {
         // Do any additional setup after loading the view.
         prepareViewControllerSettings()
         
-        LocationManager.shared.getChangeLocationData { (location) in
-            print("Yarro Location : \(location)")
-        }
         
-        LocationManager.shared.startUpdateLocation()
-
-        LocationManager.shared.locationCompletionHandler = { (dataReturned) -> Void in
-            print("data returned : \(dataReturned)")
-            
-        }
+        
+//        LocationManager.shared.getChangeLocationData { (location) in
+//            print("Yarro Location : \(location)")
+//        }
+//
+//        LocationManager.shared.startUpdateLocation()
+//
+//        LocationManager.shared.locationCompletionHandler = { (dataReturned) -> Void in
+//            print("data returned : \(dataReturned)")
+//
+//        }
+        
+        let notificationCenter =  NotificationCenter.default
+        notificationCenter.addObserver(self, selector: Selector.detectForeground, name: UIApplication.willEnterForegroundNotification, object: nil)
+        
         
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("MapViewController didAppear")
+        PermissionManager.shared.triggerPermissionCheck(callerViewController: self)
+    }
+    
 }
 
 // MARK: - major functions
@@ -46,7 +58,7 @@ extension MapViewController {
         self.view.backgroundColor = #colorLiteral(red: 0.1647058824, green: 0.1803921569, blue: 0.262745098, alpha: 1)
     }
     
-    fileprivate func addMaoView() {
+    fileprivate func addMapView() {
         self.view.addSubview(mapView)
         
         let safe = self.view.safeAreaLayoutGuide
@@ -63,8 +75,17 @@ extension MapViewController {
     
     private func prepareViewControllerSettings() {
         changeBackgroundcolor()
-        addMaoView()
+        addMapView()
         
     }
     
+    @objc func detectForeground() {
+        print("\(#function)")
+        PermissionManager.shared.triggerPermissionCheck(callerViewController: self)
+    }
+    
+}
+
+fileprivate extension Selector {
+    static let detectForeground = #selector(MapViewController.detectForeground)
 }

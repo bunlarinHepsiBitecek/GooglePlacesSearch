@@ -9,13 +9,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "GooglePlacesARBasedApp/Services/LocationManager/LocationManager.swift"
-            timestampString = "577629800.800442"
+            filePath = "GooglePlacesARBasedApp/Services/PermissionManager/PermissionManager.swift"
+            timestampString = "577899102.593586"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "locationAuthorizationCheck()"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "createPermissionButtonView(permissionType:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GooglePlacesARBasedApp/Services/PermissionManager/PermissionManager.swift"
+            timestampString = "577899102.593647"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "returnPermissionProperty(permissionType:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
