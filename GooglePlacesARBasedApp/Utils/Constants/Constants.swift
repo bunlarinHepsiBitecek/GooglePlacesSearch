@@ -22,7 +22,7 @@ struct CONSTANT {
             static var AUTO_COMPLETE_URL : String = "https://maps.googleapis.com/maps/api/place/autocomplete/json?"
         }
         struct API_DATA {
-            static var API_KEY : String = "AIzaSyCaP456ugwzQ5P2OAC7bNDI1tlvLD4Qmjg"
+            static var API_KEY : String = ""
         }
     }
 }
