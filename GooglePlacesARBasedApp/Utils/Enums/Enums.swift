@@ -35,5 +35,12 @@ enum BackendApiError: Error {
 
 enum GoogleApiCallTypes {
     case autoComplete
-    case search
+    case searchByTpye
+    case searchByKeyword
+}
+
+enum ApiCallStatus {
+    case process
+    case done
+    case none
 }

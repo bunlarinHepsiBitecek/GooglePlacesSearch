@@ -11,11 +11,35 @@ import Foundation
 struct GoogleApiCallStruct {
     
     var callType: GoogleApiCallTypes
-    var inputKeyword: String
-    var apiKey: String
-    var location: String
-    var radius: String
-    var urlString: String
+    var keyword: String
+    var apiKey: String? = nil
+    var location: String? = nil
+    var radius: String? = nil
+    var urlString: String? = nil
+    
+    init(callType: GoogleApiCallTypes, keyword: String) {
+        self.callType = callType
+        self.keyword = keyword
+    }
+    
+    init(callType: GoogleApiCallTypes, keyword: String, location: String, radius: String) {
+        self.callType = callType
+        self.keyword = keyword
+        self.apiKey = CONSTANT.GOOGLE_KEYS.API_DATA.API_KEY
+        self.location = location
+        self.radius = radius
+        
+        switch callType {
+        case .searchByKeyword:
+            urlString = CONSTANT.GOOGLE_KEYS.URLS.SEARCH_WITH_KEYWORD
+            break
+        case .searchByTpye:
+            urlString = CONSTANT.GOOGLE_KEYS.URLS.SEARCH_WITH_TYPE
+            break
+        default:
+            break
+        }
+    }
     
 }
 
@@ -29,7 +53,7 @@ class GoogleApiManager {
     ///   - type: model type
     ///   - request: url request (urlComponent is required)
     ///   - completion: return related type model
-    func autoCompleteResult<T:Codable>(type: T.Type, request: URLRequest, completion: @escaping (Result<T, Error>) -> Void){
+    func connectGoogleAPI<T:Codable>(type: T.Type, request: URLRequest, completion: @escaping (Result<T, Error>) -> Void){
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
@@ -59,21 +83,30 @@ class GoogleApiManager {
     /// - Returns: Url request
     func createUrlRequest(googleApiCallStruct: GoogleApiCallStruct) -> URLRequest? {
         
+        guard let urlString = googleApiCallStruct.urlString else { return nil }
+        
+        var urlComponent = URLComponents(string: urlString)
+        
         switch googleApiCallStruct.callType {
         case .autoComplete:
             
-            var urlComponent = URLComponents(string: googleApiCallStruct.urlString)
-            
-            urlComponent?.queryItems = [URLQueryItem(name: "input", value: googleApiCallStruct.inputKeyword), URLQueryItem(name: "key", value: googleApiCallStruct.apiKey), URLQueryItem(name: "location", value: googleApiCallStruct.location), URLQueryItem(name: "radius", value: googleApiCallStruct.radius)]
+            urlComponent?.queryItems = [URLQueryItem(name: "input", value: googleApiCallStruct.keyword), URLQueryItem(name: "key", value: googleApiCallStruct.apiKey), URLQueryItem(name: "location", value: googleApiCallStruct.location), URLQueryItem(name: "radius", value: googleApiCallStruct.radius)]
     
             return URLRequest(url: urlComponent!.url!)
             
-        case .search:
-            break;
+        case .searchByTpye:
+            
+            urlComponent?.queryItems = [URLQueryItem(name: "type", value: googleApiCallStruct.keyword), URLQueryItem(name: "key", value: googleApiCallStruct.apiKey), URLQueryItem(name: "location", value: googleApiCallStruct.location), URLQueryItem(name: "radius", value: googleApiCallStruct.radius)]
+            
+            return URLRequest(url: urlComponent!.url!)
 
+        case .searchByKeyword:
+            
+            urlComponent?.queryItems = [URLQueryItem(name: "keyword", value: googleApiCallStruct.keyword), URLQueryItem(name: "key", value: googleApiCallStruct.apiKey), URLQueryItem(name: "location", value: googleApiCallStruct.location), URLQueryItem(name: "radius", value: googleApiCallStruct.radius)]
+            
+            return URLRequest(url: urlComponent!.url!)
+            
         }
-        
-        return nil
         
     }
     

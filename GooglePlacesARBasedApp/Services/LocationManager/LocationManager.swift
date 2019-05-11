@@ -12,8 +12,11 @@ import MapKit
 class LocationManager: NSObject, CLLocationManagerDelegate {
     
     public static let shared = LocationManager()
+
+    private var locationManager: CLLocationManager!
     
-    var locationManager: CLLocationManager!
+    // completion handler
+    private var completionHandlerForLocationUpdates: ((CLLocation) -> Void)?
     
     override init() {
         super.init()
@@ -25,22 +28,40 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = CONSTANT.MAP_KIT_CONSTANT.DISTANCE_FILTER_10
-        locationManager.allowsBackgroundLocationUpdates = true // Enable background location updates
+        locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.pausesLocationUpdatesAutomatically = true // Enable automatic pausing
     }
     
+    /// Description: starts updating location
     func startUpdateLocation() {
+        print("\(#function)")
         if CLLocationManager.locationServicesEnabled() {
             self.locationManager.startUpdatingLocation()
         }
-        
     }
     
+    /// Description: stops updating location
     func stopUpdateLocation() {
+        print("\(#function)")
         if CLLocationManager.locationServicesEnabled() {
             self.locationManager.stopUpdatingLocation()
         }
+    }
+    
+    
+    /// Description: It's called to get current location. Starts location update and stop after getting location
+    ///
+    /// - Parameter completion: completion containing cllocation object
+    func getCurrentLocationData(completion: @escaping (CLLocation) -> Void) {
+        print("\(#function)")
+        if CLLocationManager.locationServicesEnabled() {
+            self.startUpdateLocation()
+            completionHandlerForLocationUpdates = { (location) -> Void in
+                completion(location)
+                self.stopUpdateLocation()
+            }
+        }
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -53,27 +74,18 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("didUpdateLocations invoked")
-        print("Remzi didUpdateLocations :\(locations.last)")
+        print("\(#function)")
         guard let location = locations.last  else {
             return
         }
-        
-        print("Altitude : \(location.altitude)")
-        print("Altitude : \(location)")
-        
-//        delegate?.didUpdateLocation()
-//
-//        locationCompletionHandler?(location)
-        
-        
+        print("location : \(location)")
+        completionHandlerForLocationUpdates?(location)
     }
     
-//    func getChangeLocationData(completion: @escaping(_ location: CLLocation) -> Void) {
-//
-//        locationListener.bind(completion)
-//
-//    }
+    // if location changes need to be listened continuously, call this function from outside
+    func listenUpdatedLocation(completion: @escaping (CLLocation) -> Void) {
+        completionHandlerForLocationUpdates = completion
+    }
     
 }
 

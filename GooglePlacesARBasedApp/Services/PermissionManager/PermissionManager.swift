@@ -27,8 +27,8 @@ class PermissionManager: NSObject {
         locationManager.delegate = self
     }
     
-    
     var completionHandlerForLocationAuthorizationDidChange : ((PermissionButtonProperty) -> Void)?
+    var completionHandlerPermissionsAcquired: ((Bool) -> Void)?
     
     /// Description : It's used to check the device has necessary permissions to move on
     ///
@@ -132,6 +132,11 @@ class PermissionManager: NSObject {
         return permissionButtonProperty
     }
     
+    /// Description: request location or camera access permission
+    ///
+    /// - Parameters:
+    ///   - permissionType: location or camera
+    ///   - permissionResult: common permissin result such as authorized, denied etc
     func requestPermission(permissionType : PermissionType, permissionResult: PermissionResult) {
         
         print("check 1")
@@ -149,6 +154,9 @@ class PermissionManager: NSObject {
                     print("check 3")
                     if granted {
                         print("Camera granted")
+                        if self.checkRequiredPermissionsExist() {
+                            self.completionHandlerPermissionsAcquired?(true)
+                        }
                     } else {
                         print("Camera not authorized")
                     }
@@ -199,9 +207,11 @@ extension PermissionManager: CLLocationManagerDelegate {
             
             print("TAKASI")
             completionHandlerForLocationAuthorizationDidChange?(returnPermissionProperty(permissionType: .location))
+            if checkRequiredPermissionsExist() {
+                completionHandlerPermissionsAcquired?(true)
+            }
         }
         
-
     }
     
 }

@@ -327,7 +327,6 @@ extension PermissionViewController: UIGestureRecognizerDelegate {
                     }
                 })
                 
-                
             }
             
         }
