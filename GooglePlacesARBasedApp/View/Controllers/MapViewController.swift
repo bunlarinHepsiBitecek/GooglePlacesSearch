@@ -66,6 +66,36 @@ class MapViewController: UIViewController {
         prepareViewControllerSettings()
         listenForegroundProcess()
         
+        let appName = "yandexnavi"
+        let appScheme = "\(appName)://"
+        let appUrl = URL(string: appScheme)
+        
+        if UIApplication.shared.canOpenURL(appUrl!) {
+            print("yandex yüklü")
+        } else {
+            print("yandex yüklü değil")
+        }
+        
+        let appName2 = "googlEmaps"
+        let appScheme2 = "\(appName2)://"
+        let appUrl2 = URL(string: appScheme2)
+        
+        if UIApplication.shared.canOpenURL(appUrl2!) {
+            print("googlemaps yüklü")
+        } else {
+            print("googlemaps yüklü değil")
+        }
+        
+        let appName3 = "maps"
+        let appScheme3 = "\(appName3)://"
+        let appUrl3 = URL(string: appScheme3)
+        
+        if UIApplication.shared.canOpenURL(appUrl3!) {
+            print("maps yüklü")
+        } else {
+            print("maps yüklü değil")
+        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -228,6 +258,9 @@ extension MapViewController: ARDataSource {
 extension MapViewController: AnnotationViewDelegate {
     func didTouch(annotationView: AnnotationView) {
         print("\(#function)")
+        
+        
+        
     }
     
     

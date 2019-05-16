@@ -51,5 +51,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>whatsapp</string>
+		<string>instagram</string>
+		<string>navi</string>
+		<string>googlemaps</string>
+		<string>yandexnavi</string>
+		<string>googlEmaps</string>
+		<string>maps</string>
+	</array>
 </dict>
 </plist>
